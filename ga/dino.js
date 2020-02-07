@@ -1,4 +1,4 @@
-function TRex(x, y, radius) {
+function Dino(x, y, radius) {
 	this.x = x;
 	this.y = y;
 	this.yVelocity = 0;
@@ -15,7 +15,7 @@ function TRex(x, y, radius) {
 /**
 *handle y values/ apply gravity
 */
-TRex.prototype.update = function(platform,nearestX) {
+Dino.prototype.update = function(platform,nearestX) {
 	if(this.onGround){
 		//jumps based on nn op
 		this.jump(nearestX);
@@ -42,7 +42,7 @@ TRex.prototype.update = function(platform,nearestX) {
 /**
 * make the dino jump
 */
-TRex.prototype.jump = function(nearestX) {
+Dino.prototype.jump = function(nearestX) {
 	//get the op from the nn
 	let nnOutput = this.brain.predict([this.y,nearestX])[0]
 	if(nnOutput > 0.5){
@@ -51,7 +51,7 @@ TRex.prototype.jump = function(nearestX) {
 	}; // jump
 };
 
-TRex.prototype.draw = function() {
+Dino.prototype.draw = function() {
 	fill('#999999');
  	stroke(255);
 	strokeWeight(2);
@@ -60,7 +60,7 @@ TRex.prototype.draw = function() {
 
 
 //checking for the obstacles hit
-TRex.prototype.hits = function(obstacles) {
+Dino.prototype.hits = function(obstacles) {
 	for (obstacle of obstacles){
 
 		// closest before collision
@@ -80,4 +80,3 @@ TRex.prototype.hits = function(obstacles) {
 	return false;
 };
 
-//Create the brain as neural network

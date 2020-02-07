@@ -5,8 +5,8 @@ var score;
 var obstacles = [];
 
 var dino;
-
-const population = 2;
+let population
+const num_population = 10;
 let dinos = []
 
 function setup() {
@@ -20,9 +20,15 @@ function setup() {
 	var size = 20;
 
 	//generate the dinos
-	for(let i=0;i<population;i++){
-		dinos[i] = new TRex(size * 2, height - horizon, size); 	
+	let dino_info = {
+		x: size * 2,
+		y: height - horizon,
+		radius: size
 	}
+
+	population = new Population(num_population,0.01,dino_info)
+
+	
 	//dino = new TRex(size * 2, height - horizon, size);
 	textSize(20);	
 }
@@ -33,13 +39,10 @@ function draw() {
 	handleLevel(frameCount);
 
 	//update the dinos
-	for(let i=0;i<population;i++){
-		dinos[i].update(horizon,getNearestBox()) 	
-	}
+	population.update(horizon,getNearestBox()); 	
+	
 	//dino.update(horizon);
 	handleObstacles();
-
-	console.log(getNearestBox())
 }
 
 /**
@@ -56,10 +59,10 @@ function drawHUD() {
   	text("Score: " + score, width / 2, 30);
 
 	/* draw T-Rex */
-	for(let i=0;i<population;i++){
-		dinos[i].draw()
-	}
-	
+	// for(let i=0;i<population;i++){
+	// 	dinos[i].draw()
+	// }
+	population.draw()
 	//dino.draw();
 }
 
@@ -130,13 +133,14 @@ function getNearestBox(){
 	return (nearestObstacle) ? nearestObstacle.x : width/2;
 }
 
-function keyPressed() {
-	if ((keyCode === UP_ARROW || keyCode === 32) && dinos[0].onGround) // jump if possible
-	for(let i=0;i<population;i++){
-		dinos[i].jump(); 	
-	}	
+//Freeze the key press :D
+// function keyPressed() {
+// 	if ((keyCode === UP_ARROW || keyCode === 32) && dinos[0].onGround) // jump if possible
+// 	for(let i=0;i<population;i++){
+// 		dinos[i].jump(); 	
+// 	}	
 	
-}
+// }
 
 function endGame() {
 	noLoop();
