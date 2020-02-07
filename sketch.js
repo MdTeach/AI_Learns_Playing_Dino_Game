@@ -6,7 +6,7 @@ var obstacles = [];
 
 var dino;
 let population
-const num_population = 100;
+const num_population = 80;
 let dinos = []
 
 function setup() {
@@ -26,7 +26,7 @@ function setup() {
 		radius: size
 	}
 
-	population = new Population(num_population,0.01,dino_info)
+	population = new Population(num_population,dino_info)
 
 	
 	//dino = new TRex(size * 2, height - horizon, size);

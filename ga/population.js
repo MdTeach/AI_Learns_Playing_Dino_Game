@@ -1,5 +1,5 @@
 class Population{
-  constructor(n_size,mutation_rate=0.01,dino){
+  constructor(n_size,dino){
     //to hold the current population
     this.num_populations = n_size;
 
@@ -9,8 +9,6 @@ class Population{
       // Number of generations
     this.generations = 0;
 
-    // Mutation rate
-    this.mutationRate = mutation_rate; 
     
     //array holds the may population
     this.population = [];
@@ -26,9 +24,10 @@ class Population{
   update(horizon,getNearestBox){
     //if the pops endded
     if(this.population.length === 0){
-      //1 select two pops from the mating poop
-      //2 crossover two pops two get new one
-      //3 mutate formed child
+      this.population = []
+      print("Gen")
+      this.rejectionSampling(this.matingPool)
+      this.matingPool = []
     }
 
 
@@ -53,5 +52,36 @@ class Population{
     
     }
     //this.population = newPop;
+  }
+
+  rejectionSampling(pops_given){
+    //getting the max pop
+    let max_score = 0
+    for(pop of pops_given){if(pop.score>max_score){max_score=pop.score}}
+
+    for(pop of pops_given){
+      let pop1 = this.pickUpRandomly(pops_given,max_score);
+      let pop2 = this.pickUpRandomly(pops_given,max_score);
+      pop1.crossover(pop2)
+      pop1.mutate()
+      this.population.push(pop1)
+    }
+  }
+
+  pickUpRandomly(pops,max_score){
+    let i = floor(random(pops.length))
+    let score = floor(random(max_score))
+
+    let flag = true
+    let counter = 0;
+
+    while(flag){
+      let pop = pops[i]
+      if(pop.score>= score || counter>1000){
+        return pop;
+      }
+      counter++;
+    }
+    
   }
 }

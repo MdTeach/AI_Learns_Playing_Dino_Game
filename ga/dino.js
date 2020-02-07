@@ -86,3 +86,15 @@ Dino.prototype.hits = function(obstacles) {
 	return false;
 };
 
+//crossover with another Dinos
+Dino.prototype.crossover = function(patner){
+	//make its hidden variable with of patner
+	this.brain.weights_ih.data = patner.brain.weights_ih.data 
+}
+
+//mutate
+Dino.prototype.mutate = function(){
+	//make its hidden variable with of patner
+	this.brain.mutate()
+}
+

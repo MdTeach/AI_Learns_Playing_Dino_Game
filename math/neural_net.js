@@ -74,4 +74,23 @@ class NeuralNetwork {
     setActivationFunction(func = sigmoid) {
         this.activation_function = func;
     }
+
+    mutate(){
+      this.weights_ih.map(this.mutate_func);
+      this.weights_ho.map(this.mutate_func);
+      this.bias_h.map(this.mutate_func);
+      this.bias_o.map(this.mutate_func);
+    }
+
+
+    // Mutation function to be passed into bird.brain
+    mutate_func(x) {
+      if (random(1) < 0.1) {
+        let offset = randomGaussian() * 0.5;
+        let newx = x + offset;
+        return newx;
+      } else {
+        return x;
+      }
+    }
 }
