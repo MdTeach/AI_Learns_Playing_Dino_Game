@@ -22,18 +22,15 @@ class Population{
   }
 
   update(horizon,getNearestBox){
-    //if the pops endded
-    if(this.population.length === 0){
-      this.population = []
-      print("Gen")
-      this.rejectionSampling(this.matingPool)
-      this.matingPool = []
-    }
-
-
     for (let i = 0; i < this.population.length; i++) {
       this.population[i].update(horizon,getNearestBox);
     }
+  }
+
+  selection(){
+      this.population = []
+      this.rejectionSampling(this.matingPool)
+      this.matingPool = []
   }
 
   draw(){

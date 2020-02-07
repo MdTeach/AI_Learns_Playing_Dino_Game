@@ -2,11 +2,13 @@ var horizon;
 var obstacleSpeed;
 
 var score;
+var generation;
+
 var obstacles = [];
 
 var dino;
 let population
-const num_population = 80;
+const num_population = 120;
 let dinos = []
 
 function setup() {
@@ -16,6 +18,7 @@ function setup() {
 	textAlign(CENTER);
 	horizon = height - 40;
 	score = 0;
+	generation = 1;
 	obstacleSpeed = 6;
 	var size = 20;
 
@@ -43,6 +46,16 @@ function draw() {
 	
 	//dino.update(horizon);
 	handleObstacles();
+
+	//reload con
+	if(population.population.length === 0){
+		console.log("Gen")
+		score = 0;
+		obstacles = [];
+		population.selection()
+		generation+=1;
+		
+	}
 }
 
 /**
@@ -51,12 +64,12 @@ function draw() {
 function drawHUD() {
   	/* draw horizon */
 	stroke(255);
-	strokeWeight(2);
+	strokeWeight(1);
   	line(0, horizon, width, horizon);
 
 	/* draw score */
 	noStroke();
-  	text("Score: " + score, width / 2, 30);
+	text("Generation: " + generation+"  Score: " + score, width / 2, 30);
 
 	/* draw T-Rex */
 	// for(let i=0;i<population;i++){
@@ -94,10 +107,10 @@ function handleObstacles() {
 function handleLevel(n) {
 
 	// every 0.5 seconds	
-	if (n % 30 === 0) { 
+	if (n % floor(random(29,30)) === 0) { 
 	var n = noise(n); // noisey
 
-	if (n > 0.5)
+	if (n > 0.400)
 		newObstacle(n); // push new obstacle
 		if (n % 120 === 0) // every 2 seconds
 		obstacleSpeed *= 1.05; // speed up
