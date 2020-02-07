@@ -4,6 +4,7 @@ function Dino(x, y, radius) {
 	this.yVelocity = 0;
 	this.speed = 1
 	this.onGround = true;
+	this.score = 0;
 	// size of circle
 	this.radius = radius;
 	
@@ -16,6 +17,11 @@ function Dino(x, y, radius) {
 *handle y values/ apply gravity
 */
 Dino.prototype.update = function(platform,nearestX) {
+	
+	if(frameCount%10===0){
+		this.score++;
+	}
+	
 	if(this.onGround){
 		//jumps based on nn op
 		this.jump(nearestX);

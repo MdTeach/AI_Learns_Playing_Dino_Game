@@ -6,7 +6,7 @@ var obstacles = [];
 
 var dino;
 let population
-const num_population = 10;
+const num_population = 100;
 let dinos = []
 
 function setup() {
@@ -83,7 +83,7 @@ function handleObstacles() {
   }
   
 	// for(let i=0;i<population;i++){
-	// 	if(dinos[i].hits(obstacles))endGame(); 	
+	population.hits(obstacles); 	
 	// }
 }
 
