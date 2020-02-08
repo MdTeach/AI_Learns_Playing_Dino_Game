@@ -5,12 +5,13 @@ function Dino(x, y, radius) {
 	this.speed = 1
 	this.onGround = true;
 	this.score = 0;
+	
 	// size of circle
 	this.radius = radius;
 	
 	//init the nn
-	//inputs be this.y, nearest box x & y
-	this.brain = new NeuralNetwork(2,3,1)
+	//nearest box x & y
+	this.brain = new NeuralNetwork(2,4,2)
 }
 
 /**
@@ -26,8 +27,6 @@ Dino.prototype.update = function(platform,nearestX) {
 		//jumps based on nn op
 		this.jump(nearestX);
 	}
-
-
 	var bottom = this.y + this.radius; // bottom pixel of circle
 	var nextBottom = bottom + this.yVelocity; // calculate next frame's bottom
 
@@ -50,11 +49,12 @@ Dino.prototype.update = function(platform,nearestX) {
 */
 Dino.prototype.jump = function(nearestX) {
 	//get the op from the nn
-	let nnOutput = this.brain.predict([this.y,nearestX])[0]
-	if(nnOutput > 0.5){
-		//console.log("jumping",nnOutput),
+	//set x and y of the nearest obastacle
+	let nnOutput = this.brain.predict([nearestX[0],nearestX[1]])
+	if(nnOutput[0]>0.5 && nnOutput[1]>0){
+		//jump
 		this.yVelocity = -(this.radius * 0.7)
-	}; // jump
+	}; 
 };
 
 Dino.prototype.draw = function() {
@@ -67,7 +67,7 @@ Dino.prototype.draw = function() {
 
 //checking for the obstacles hit
 Dino.prototype.hits = function(obstacles) {
-	for (obstacle of obstacles){
+	for (let obstacle of obstacles){
 
 		// closest before collision
 		var halfSize = obstacle.size / 2;

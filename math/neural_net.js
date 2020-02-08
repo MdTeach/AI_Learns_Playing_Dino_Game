@@ -85,7 +85,7 @@ class NeuralNetwork {
 
     // Mutation function to be passed into bird.brain
     mutate_func(x) {
-      if (random(1) < 0.1) {
+      if (random(1) < 0.2) {
         let offset = randomGaussian() * 0.5;
         let newx = x + offset;
         return newx;

@@ -1,25 +1,28 @@
+//GAME variables
 var horizon;
 var obstacleSpeed;
-
 var score;
 var generation;
-
 var obstacles = [];
 
+//Setting our player 
 var dino;
 let population
-const num_population = 120;
+const num_population = 15;
 let dinos = []
 
+//init
 function setup() {
 	
 	//setting up
 	createCanvas(600, 200);
 	textAlign(CENTER);
 	horizon = height - 40;
+	obstacleSpeed = 6;
+	 
+	//Setting our player
 	score = 0;
 	generation = 1;
-	obstacleSpeed = 6;
 	var size = 20;
 
 	//generate the dinos
@@ -29,6 +32,7 @@ function setup() {
 		radius: size
 	}
 
+	//init the population
 	population = new Population(num_population,dino_info)
 
 	
@@ -36,6 +40,8 @@ function setup() {
 	textSize(20);	
 }
 
+
+//updates each frame
 function draw() {
 	background(51);
 	drawHUD();
@@ -49,12 +55,11 @@ function draw() {
 
 	//reload con
 	if(population.population.length === 0){
-		console.log("Gen")
+		console.log("Gen",generation+1)
 		score = 0;
 		obstacles = [];
 		population.selection()
-		generation+=1;
-		
+		generation+=1;	
 	}
 }
 
@@ -71,10 +76,6 @@ function drawHUD() {
 	noStroke();
 	text("Generation: " + generation+"  Score: " + score, width / 2, 30);
 
-	/* draw T-Rex */
-	// for(let i=0;i<population;i++){
-	// 	dinos[i].draw()
-	// }
 	population.draw()
 	//dino.draw();
 }
@@ -84,20 +85,17 @@ function drawHUD() {
 */
 function handleObstacles() {
 
-  for (var i = obstacles.length - 1; i >= 0; i--) {
-
+	for (var i = obstacles.length - 1; i >= 0; i--) {
 		obstacles[i].update(obstacleSpeed);
 		obstacles[i].draw();
-		// if (obstacles[i].hits(dino)) // if there's a collision
-		// 	endGame();
 
 		if (!obstacles[i].onScreen) // if it's no longer showing
 			obstacles.splice(i, 1); // delete from array
-  }
+  	}
   
-	// for(let i=0;i<population;i++){
+	//handle collosions
 	population.hits(obstacles); 	
-	// }
+	
 }
 
 
@@ -107,13 +105,11 @@ function handleObstacles() {
 function handleLevel(n) {
 
 	// every 0.5 seconds	
-	if (n % floor(random(29,30)) === 0) { 
+	if (n % 31 === 0) { 
 	var n = noise(n); // noisey
 
-	if (n > 0.400)
+	if (n > random(0.2,0.8))
 		newObstacle(n); // push new obstacle
-		if (n % 120 === 0) // every 2 seconds
-		obstacleSpeed *= 1.05; // speed up
 	}
 	score++;
 }
@@ -138,12 +134,12 @@ function getNearestBox(){
 	const minPad = 45
 	let nearestObstacle;
 	let max = Infinity
-	for(collider of obstacles){
+	for(let collider of obstacles){
 		if (collider.x < max && collider.x > minPad){
 			nearestObstacle = collider
 		}
 	}
-	return (nearestObstacle) ? nearestObstacle.x : width/2;
+	return (nearestObstacle) ? [nearestObstacle.x,nearestObstacle.y] : [Infinity,0];
 }
 
 //Freeze the key press :D
